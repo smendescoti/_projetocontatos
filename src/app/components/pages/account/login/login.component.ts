@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AuthHelper } from 'src/app/helpers/auth-helper';
 
 @Component({
   selector: 'app-login',
@@ -10,9 +11,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class LoginComponent implements OnInit {
 
+  mensagem: string = '';
+
   constructor(
     private usuarioService: UsuarioService,
-    private spinnerService: NgxSpinnerService
+    private spinnerService: NgxSpinnerService,
+    private authHelper: AuthHelper
   ) { }
 
   ngOnInit(): void {
@@ -39,11 +43,19 @@ export class LoginComponent implements OnInit {
     this.usuarioService.postLogin(this.formLogin.value)
       .subscribe({
         next: (auth) => {
-          console.log(auth);
+          this.authHelper.signIn(auth);
           this.spinnerService.hide();
+          window.location.href = "/contatos-consulta";
         },
         error: (e) => {
-          console.log(e.error);
+          switch (e.status) {
+            case 401:
+              this.mensagem = e.error.message;
+              break;
+            default:
+              this.mensagem = 'Falha ao autenticar, por favor tente mais tarde.';
+              break;
+          }
           this.spinnerService.hide();
         }
       })
