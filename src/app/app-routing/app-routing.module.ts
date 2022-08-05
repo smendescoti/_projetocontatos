@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ContatosGuard } from '../guards/contatos.guard';
+import { AccountGuard } from '../guards/account.guard';
 
 //importando os componentes que serão mapeados com rotas
 import { LoginComponent } from '../components/pages/account/login/login.component';
@@ -14,12 +15,12 @@ import { ContatosEdicaoComponent } from '../components/pages/contatos/contatos-e
 //mapeamento das rotas de cada componente
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'acessar-conta' },
-  { path: 'acessar-conta', component: LoginComponent },
-  { path: 'criar-conta', component: RegisterComponent },
-  { path: 'recuperar-senha', component: PasswordComponent },
+  { path: 'acessar-conta', component: LoginComponent, canActivate: [AccountGuard] },
+  { path: 'criar-conta', component: RegisterComponent, canActivate: [AccountGuard] },
+  { path: 'recuperar-senha', component: PasswordComponent, canActivate: [AccountGuard] },
   { path: 'contatos-cadastro', component: ContatosCadastroComponent, canActivate: [ContatosGuard] },
   { path: 'contatos-consulta', component: ContatosConsultaComponent, canActivate: [ContatosGuard] },
-  { path: 'contatos-edicao', component: ContatosEdicaoComponent, canActivate: [ContatosGuard] }
+  { path: 'contatos-edicao/:id', component: ContatosEdicaoComponent, canActivate: [ContatosGuard] }
 ];
 
 @NgModule({

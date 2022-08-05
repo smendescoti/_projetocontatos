@@ -6,6 +6,10 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { ContatosGuard } from './guards/contatos.guard';
+import { AccountGuard } from './guards/account.guard';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 import { AppComponent } from './app.component';
 import { MenuPrincipalComponent } from './components/shared/menu-principal/menu-principal.component';
@@ -16,6 +20,9 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { ContatosCadastroComponent } from './components/pages/contatos/contatos-cadastro/contatos-cadastro.component';
 import { ContatosConsultaComponent } from './components/pages/contatos/contatos-consulta/contatos-consulta.component';
 import { ContatosEdicaoComponent } from './components/pages/contatos/contatos-edicao/contatos-edicao.component';
+import { AlertaMensagensComponent } from './components/shared/alerta-mensagens/alerta-mensagens.component';
+
+export const options: Partial<IConfig | null> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   declarations: [
@@ -26,7 +33,8 @@ import { ContatosEdicaoComponent } from './components/pages/contatos/contatos-ed
     PasswordComponent,
     ContatosCadastroComponent,
     ContatosConsultaComponent,
-    ContatosEdicaoComponent
+    ContatosEdicaoComponent,
+    AlertaMensagensComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +43,10 @@ import { ContatosEdicaoComponent } from './components/pages/contatos/contatos-ed
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxMaskModule.forRoot(),
+    NgxPaginationModule,
+    FilterPipeModule
   ],
   providers: [
     {
@@ -43,7 +54,8 @@ import { ContatosEdicaoComponent } from './components/pages/contatos/contatos-ed
       useClass: AuthInterceptor,
       multi: true
     },
-    ContatosGuard
+    ContatosGuard,
+    AccountGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -4,7 +4,17 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Consulta de Contatos</h5>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="card-title">Consulta de Contatos</h5>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" [(ngModel)]="filtro.nome"
+                                placeholder="Filtrar pelo nome do contato"/>
+                        </div>
+                    </div>
+
                     <hr />
 
                     <table class="table table-sm table-hover">
@@ -18,13 +28,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                            <tr *ngFor="let c of contatos | filterBy: filtro | paginate : { itemsPerPage: 5, currentPage: pagina }">
+                                <td>{{c.nome | uppercase}}</td>
+                                <td>{{c.email | lowercase}}</td>
+                                <td>{{c.telefone | mask : '(00) 00000-0000'}}</td>
+                                <td>{{c.dataCriacao | date : 'dd/MM/yyyy HH:mm'}}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary">
+                                    <button class="btn btn-sm btn-primary"
+                                        [routerLink]="['/contatos-edicao', c.idContato]">
                                         Editar
                                     </button>
                                     &nbsp;
@@ -37,11 +48,20 @@
                         <tfoot>
                             <tr>
                                 <td colspan="5">
-                                    Quantidade de contatos: 0
+                                    Quantidade de contatos: {{(contatos | filterBy: filtro).length}}
                                 </td>
                             </tr>
                         </tfoot>
-                    </table>
+                    </table>    
+                    
+                    <div class="text-center mt-2">
+                        <pagination-controls
+                            (pageChange)="handlePageChange($event)"
+                            previousLabel="Página anterior"
+                            nextLabel="Próxima página"
+                        >                            
+                        </pagination-controls>
+                    </div>
 
                 </div>
             </div>
