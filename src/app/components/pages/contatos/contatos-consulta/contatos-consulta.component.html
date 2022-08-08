@@ -17,6 +17,10 @@
 
                     <hr />
 
+                    <div *ngIf="mensagem" class="mt-3 mb-3">
+                        <strong>{{mensagem}}</strong>
+                    </div>
+
                     <table class="table table-sm table-hover">
                         <thead>
                             <tr>
@@ -39,7 +43,8 @@
                                         Editar
                                     </button>
                                     &nbsp;
-                                    <button class="btn btn-sm btn-danger">
+                                    <button class="btn btn-sm btn-danger"
+                                        (click)="onDelete(c.idContato)">
                                         Excluir
                                     </button>
                                 </td>
